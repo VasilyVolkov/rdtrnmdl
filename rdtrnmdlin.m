@@ -89,8 +89,8 @@ D = zeros(size(C,1),size(B,2));
 % v_w - Side Wind Speed in [m/s]
 F = [
                k_1,           k_2,            k_3, 0.5*rho*C_y*(A_y1+A_y2);
-     k_1*(d_1+l_1), k_2*(d_1-l_2),              0,        0.5*rho*C_y*A_y1;
-                 0,             0, -k_3*(d_2+l_3),       -0.5*rho*C_y*A_y2;
+     k_1*(d_1+l_1), k_2*(d_1-l_2),              0,    0.5*rho*C_y*A_y1*d_1;
+                 0,             0, -k_3*(d_2+l_3),   -0.5*rho*C_y*A_y2*d_2;
                  0,             0,              0,                       0;
                  0,             0,              0,                       0;
                  0,             0,              0,                       0;

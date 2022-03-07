@@ -14,9 +14,9 @@ C_x = 0.5;
 C_y = 0.9;
 
 % Frontal and Lateral Cross-Sectional Areas of the Road Train in [m^2]
-A_x   = 7.5;
-A_y_1 = 7.5;
-A_y_2 = 41.6;
+A_x  = 7.5;
+A_y1 = 7.5;
+A_y2 = 41.6;
 
 % Road Train Length, Width and Height of CG in [m]
 b = 2.045;
@@ -25,8 +25,8 @@ b = 2.045;
 
 % Distances from the Truck Fifth Wheel to the Truck and Semitrailer in [m]
 % CG
-d_1 = 1.815;
-d_2 = 4.34;
+d_t = 1.815;
+d_s = 4.34;
 
 % Mass of the Truck and Semitrailer in [kg]
 m_t = 7000;
@@ -36,8 +36,8 @@ m_s = 15000;
 sigma = 1.05;
 
 % Moment of Inertia of the Truck and Semitrailer in [kg*m2] 
-J_t = m_t*d_1^2 + 30000;
-J_s = m_s*d_2^2 + 1/12*m_s*((2*d_2)^2 + b^2);
+J_t = 30000;
+J_s = 1/12*m_s*((2*d_s)^2 + b^2);
 % J_t = 15000;
 % J_s = 20000;
 
@@ -45,7 +45,6 @@ J_s = m_s*d_2^2 + 1/12*m_s*((2*d_2)^2 + b^2);
 l_1 = 1.2; 
 l_2 = 2.38;
 l_3 = 4.34;
-
 
 % Cornering Stiffness in [N/rad] Coefficients for each Road Train Axle 
 k_1 = 50000;
@@ -55,15 +54,10 @@ k_3 = 3*150000;
 % Gravitational Acceleration in [m/s^2]
 g = 9.81;
 
-% Road Train Weight in [N]
+% Road Train Weight, Fifth Wheel and Axle Load in [N]
 P_t  = m_t*g;
 P_s  = m_s*g;
-
-% Road Train Fifth Wheel Load in [N]
-P_fw = P_s*l_3/(d_2 + l_3);
-
-% Road Train Axle Load in [N]
-P_3 = P_s - P_fw;
-P_2 = (P_t*l_1 + P_fw*(l_1 + d_1))/(l_1 + l_2);
-P_1 = P_t + P_fw - P_2;
-
+P_fw = P_s*l_3/(d_s + l_3);
+P_3  = P_s - P_fw;
+P_2  = (P_t*l_1 + P_fw*(l_1 + d_t))/(l_1 + l_2);
+P_1  = P_t + P_fw - P_2;
