@@ -1,8 +1,11 @@
-function dxdt = rdtrnmdlnlin(t,x,u,w,p)
+function dxdt = rdtrnmdlnlin(t,x,t_span,u,p)
 %RDTRNMDLNLIN Summary of this function goes here
 %   Detailed explanation goes here
 
 %% Initialization
+
+% Interpolate External Time-Dependent Model Inputs and Disturbances
+u = interp1(t_span,u,t);
 
 % Initialize Model States
 v_x   = x(1);
@@ -19,10 +22,10 @@ a     = u(1);
 theta = u(2);
 
 % Initialize Model Disturbances
-dalpha_1 = w(1);
-dalpha_2 = w(2);
-dalpha_3 = w(3);
-v_w2     = w(4);
+dalpha_1 = u(3);
+dalpha_2 = u(4);
+dalpha_3 = u(5);
+v_w2     = u(6);
 
 % Initialize Model Parameters
 f_0   = p.f_0;
@@ -112,19 +115,20 @@ M_inv(4,1) = 0;
 M_inv(4,2) = -p_0*p_4;
 M_inv(4,3) = d_s*d_t*m_s*m_t*p_0;
 M_inv(4,4) = -p_0*p_2;
-M_inv      = diag(M_inv,eye(4));
+M_inv      = blkdiag(M_inv,eye(4));
 
 % Calculate the Forces Matrix Q
 Q(1,1) = d_t*m_t*w_zt^2 + m_rt*v_y*w_zt - d_s*m_s*cos(dphi)*w_zs^2 - ...
-    F_wxrt + R_x2 + R_x3*cos(dphi) + R_x1*cos(theta) + ...
-    R_y3*sin(dphi) - R_y1*sin(theta);
-Q(2,1) = d_s*m_s*sin(dphi)*w_zs^2 + F_wys + F_wyt + R_y2 + ...
-    R_y3*cos(dphi) + R_y1*cos(theta) - R_x3*sin(dphi) + ...
-    R_x1*sin(theta) - m_rt*sigma*v_x*w_zt;
-Q(3,1) = F_wyt*d_t + R_y2*(d_t - l_2) + (-d_t*m_t*v_x)*w_zt + ...
-    R_y1*cos(theta)*(d_t + l_1) + R_x1*sin(theta)*(d_t + l_1) + ...
+    F_wxrt + R_x1*cos(theta) + R_x2 + R_x3*cos(dphi) - ...
+    R_y1*sin(theta) + R_y3*sin(dphi);
+Q(2,1) = d_s*m_s*sin(dphi)*w_zs^2 + F_wyt + F_wys + ...
+    R_x1*sin(theta) - R_x3*sin(dphi) + ...   
+    R_y1*cos(theta) + R_y2 + R_y3*cos(dphi) - ...
+    m_rt*sigma*v_x*w_zt;
+Q(3,1) = F_wyt*d_t + (-d_t*m_t*v_x)*w_zt + ...
+    R_x1*sin(theta)*(d_t + l_1) + R_y1*cos(theta)*(d_t + l_1) + ...
     m_rt*v_x*v_y*(sigma - 1);
-Q(4,1) = d_s*m_s*v_x*w_zt + R_y3*(d_s + l_3) - F_wys*d_s;
+Q(4,1) = d_s*m_s*v_x*w_zt - R_y3*(d_s + l_3) - F_wys*d_s;
 Q(5,1) = v_x*cos(phi_t) - v_y*sin(phi_t);
 Q(6,1) = v_y*cos(phi_t) + v_x*sin(phi_t);
 Q(7,1) = w_zt;

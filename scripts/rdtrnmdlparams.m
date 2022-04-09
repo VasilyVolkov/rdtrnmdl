@@ -1,8 +1,5 @@
 %% Road Train Parameters
 
-% Road Train Longitudinal Speed in [m/s]
-v_x = 20;
-
 % Rolling Resistance Coefficient [null]
 p.f_0 = 0.0038;
 
@@ -14,9 +11,9 @@ p.C_x = 0.5;
 p.C_y = 0.9;
 
 % Frontal and Lateral Cross-Sectional Areas of the Road Train in [m^2]
-p.A_x  = 7.5;
-p.A_y1 = 7.5;
-p.A_y2 = 41.6;
+p.A_xrt  = 7.5;
+p.A_yt = 7.5;
+p.A_ys = 41.6;
 
 % Road Train Length, Width and Height of CG in [m]
 p.b = 2.045;
@@ -38,7 +35,7 @@ p.sigma = 1.05;
 
 % Moment of Inertia of the Truck and Semitrailer in [kg*m2] 
 p.J_t = 30000;
-p.J_s = 1/12*m_s*((2*d_s)^2 + b^2);
+p.J_s = 1/12*p.m_s*((2*p.d_s)^2 + p.b^2);
 % J_t = 15000;
 % J_s = 20000;
 
@@ -56,9 +53,9 @@ p.k_3 = 3*150000;
 p.g = 9.81;
 
 % Road Train Weight, Fifth Wheel and Axle Load in [N]
-P_t  = m_t*g;
-P_s  = m_s*g;
-P_fw = P_s*l_3/(d_s + l_3);
+P_t  = p.m_t*p.g;
+P_s  = p.m_s*p.g;
+P_fw = P_s*p.l_3/(p.d_s + p.l_3);
 p.P_3  = P_s - P_fw;
-p.P_2  = (P_t*l_1 + P_fw*(l_1 + d_t))/(l_1 + l_2);
-p.P_1  = P_t + P_fw - P_2;
+p.P_2  = (P_t*p.l_1 + P_fw*(p.l_1 + p.d_t))/(p.l_1 + p.l_2);
+p.P_1  = P_t + P_fw - p.P_2;
