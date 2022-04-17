@@ -92,9 +92,6 @@ B_2 = [
                          0,                   0,                    0,                               0;
       ];
 
-% Input-to-State Matrix
-B = [B_1, B_2];
-
 % State-to-Output Matrix
 C = [
      1 0 0 0 0 0;
@@ -102,16 +99,10 @@ C = [
     ];
 
 % Input-to-Output Matrix
-D = zeros(size(C,1),size(B,2));
-
-% Linear Functional Matrix
-% g = K*x = [alpha_2; alpha_3; dphi].
-K = [
-     -1/v_x p.l_2/v_x         0  0  0  0;
-     -1/v_x         0 p.l_3/v_x  0  0  0;
-          0         0         0  0  1 -1;
-    ];
+D_1 = zeros(size(C,1),size(B_1,2));
+D_2 = zeros(size(C,1),size(B_2,2));
 
 % Solve the state-space equations with respect to the derivatives
 A = M\A;
-B = M\B;
+B_1 = M\B_1;
+B_2 = M\B_2;
